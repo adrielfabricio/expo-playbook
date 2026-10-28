@@ -1,0 +1,5 @@
+# Conformance reports of private projects stay on this machine.
+audits/
+
+.DS_Store
+node_modules/

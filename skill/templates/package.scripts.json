@@ -1,0 +1,31 @@
+{
+	"scripts": {
+		"expo:start": "expo start",
+		"expo:ios": "expo run:ios",
+		"expo:android": "expo run:android",
+		"expo:web": "expo start --web",
+		"check:lint": "expo lint",
+		"check:types": "tsc --noEmit",
+		"check:arch": "eslint --config eslint.arch.config.js --max-warnings=0 src",
+		"check:unused": "npx knip",
+		"format:write": "prettier --write .",
+		"format:check": "prettier --check .",
+		"test:unit": "jest",
+		"test:watch": "jest --watch",
+		"test:coverage": "jest --coverage",
+		"build:local:ios": "mkdir -p build/artifacts && eas build --local --platform ios --profile production --output build/artifacts/<app>-ios.ipa",
+		"build:local:android": "mkdir -p build/artifacts && eas build --local --platform android --profile production --output build/artifacts/<app>-android.aab",
+		"build:local:apk": "mkdir -p build/artifacts && eas build --local --platform android --profile production-apk --output build/artifacts/<app>-android.apk",
+		"upload:ios": "eas submit --platform ios --profile production --path build/artifacts/<app>-ios.ipa",
+		"upload:android": "eas submit --platform android --profile production --path build/artifacts/<app>-android.aab",
+		"lint": "expo lint"
+	},
+	"expo": {
+		"install": {
+			"exclude": ["@sentry/react-native"]
+		}
+	},
+	"knip": {
+		"ignoreBinaries": ["eas"]
+	}
+}

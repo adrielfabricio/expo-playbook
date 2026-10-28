@@ -1,0 +1,37 @@
+{
+	"cli": {
+		"version": ">= 21.0.0",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"development": {
+			"distribution": "internal",
+			"environment": "development",
+			"android": { "buildType": "apk" },
+			"env": {
+				"APP_ENV": "development",
+				"SENTRY_ENVIRONMENT": "development",
+				"SENTRY_DISABLE_AUTO_UPLOAD": "true"
+			}
+		},
+		"production": {
+			"autoIncrement": true,
+			"environment": "production",
+			"android": { "buildType": "app-bundle" },
+			"env": {
+				"APP_ENV": "production",
+				"SENTRY_ENVIRONMENT": "production"
+			}
+		},
+		"production-apk": {
+			"extends": "production",
+			"android": { "buildType": "apk" }
+		}
+	},
+	"submit": {
+		"production": {
+			"ios": { "ascAppId": "<app-store-connect-app-id>" },
+			"android": { "track": "internal", "releaseStatus": "draft" }
+		}
+	}
+}
