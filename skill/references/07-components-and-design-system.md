@@ -33,7 +33,7 @@ The **names and props below are canonical across all apps**; the look (values, c
 | `Dialog` + `DialogHost` | Confirmations and notices, driven by `useDialogStore` | `show({ title, message?, actions? })`, `dismiss()` |
 | `ActionSheet` / `Menu` | Every "three dots" menu (`ActionSheet`) / a choice from a platform list (`Menu`, wraps `@expo/ui` `MenuView`) | grouped rows with icons; `locked` rows still run |
 | `AppBottomSheet` | The one bottom-sheet wrapper (`@expo/ui`) | `snapPoints` from `SHEET_SNAP_POINTS`, `ref.present()`/`dismiss()` |
-| `toastUtils` | One-off feedback | `showSuccess(message)`, `showError(message)` — title only, from the bottom |
+| `toastUtils` | One-off feedback | `showSuccess(message, action?)`, `showError(message)` — a single line from the bottom; `action` is an optional `{ label, onPress }` for an undo, and a toast with an action stays visible longer |
 
 Hosts (`DialogHost`, toaster, paywall host, sync hosts) are mounted once — `components/<name>-host/` (layered) or `shell/<name>/` (feature-based).
 

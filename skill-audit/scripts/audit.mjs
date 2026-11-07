@@ -285,10 +285,15 @@ record("09", "app.routes-only", appStrays.length ? "fail" : "pass", "`src/app/` 
 
 if (isFeatureBased) {
 	const barrels = readdirSync(join(SRC, "features")).map((name) => join(SRC, "features", name, "index.ts")).filter(existsSync);
-	const starBarrels = barrels.filter((file) => /export \*/.test(readFileSync(file, "utf8"))).map((file) => relative(ROOT, file));
+	const starBarrels = barrels.filter((file) => /export \*/.test(stripComments(readFileSync(file, "utf8")))).map((file) => relative(ROOT, file));
 	record("03", "barrels.no-star", starBarrels.length ? "fail" : "pass", "Feature barrels never `export *`", starBarrels);
 	const uncommented = barrels.filter((file) => !/\/\*\*|\/\//.test(readFileSync(file, "utf8"))).map((file) => relative(ROOT, file));
 	record("03", "barrels.why-public", uncommented.length ? "warn" : "pass", `Feature barrels say why each export is public (${barrels.length} barrels)`, uncommented, uncommented.length);
+}
+
+/** Source text without block and line comments, so prose that mentions a construct is not read as the construct. */
+function stripComments(text) {
+	return text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
 }
 
 // ---------------------------------------------------------------- docs
