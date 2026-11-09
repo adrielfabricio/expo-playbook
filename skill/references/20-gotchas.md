@@ -38,7 +38,7 @@ Each row cost a real bug in one of the apps. Apply the "Do"; never regress to th
 | Navigation APIs from `expo-router` / `expo-router/react-navigation` | Import `@react-navigation/*` directly |
 | `web.output: "single"` for local-only web | Switch to `server`/`static` without auditing Firebase/AsyncStorage for SSR |
 
-## Firebase (JS SDK)
+## Firebase (JS SDK, and React Native Firebase)
 
 | Area | Do | Do not |
 | --- | --- | --- |
@@ -51,6 +51,18 @@ Each row cost a real bug in one of the apps. Apply the "Do"; never regress to th
 | Batches | Chunk at ~400 ops (limit 500) | One unbounded batch |
 | Security rules | `match /users/{userId}/{collection}/{document=**}`; deploy from the file; test both directions | A bare `{document=**}` under the user (matches the account doc too); edit rules in the console |
 | Push (FCM) | Native Firebase config + dev/production build; `expo-notifications` only asks permission, Firebase Messaging owns token and messages | Expect push in Expo Go or the simulator |
+
+React Native Firebase (`@react-native-firebase/app`, `auth`, `firestore`; use it when the app must work offline after a restart):
+
+| Area | Do | Do not |
+| --- | --- | --- |
+| iOS linking | `expo-build-properties` with `ios.useFrameworks: "dynamic"` and the `@react-native-firebase/app` / `auth` config plugins; a new native build | `disableSPM`; static frameworks (Firebase Apple SDK 13+ is SPM-only); OTA for the change |
+| Config per environment | Commit `GoogleService-Info.plist` and `google-services.json` per environment (e.g. `firebase/dev`, `firebase/prd`); `app.config.ts` selects by `APP_ENV` and throws when a file's project id or bundle id / package is not the build's | A shared file for both environments; reading web config from `EXPO_PUBLIC_*` |
+| Cache | Default disk cache; `getFirestore(app)`; `terminate(db)` then `clearPersistence(db)` on sign-out and deletion, after the listeners unsubscribed | `clearPersistence` on a live instance; `persistence: false` to avoid a bug |
+| Apple revocation | Native `revokeToken(auth, authorizationCode)` before any data is deleted | The JS SDK's `revokeAccessToken` (web popup flow) |
+| Account deletion | Force a token refresh first (`getIdToken(true)`): offline the wipe reads the disk cache and would clear only the cache | Trusting `getDocs` to fail offline |
+| Migrating from the JS SDK | The JS session cannot reach the native Auth without a server issuing a custom token: accept one sign-in, keep the uid, drop the old `firebase:*` AsyncStorage keys | Building a handoff nobody asked for |
+| Tests | Mock `@react-native-firebase/app` and the module under test in `jest.setup.js`; keep the JS SDK only for the rules tests and lint-ban it in `src/` | Letting Jest load the native modules |
 
 ## Supabase
 

@@ -4,7 +4,7 @@ chapter: 10
 tags: [state, data, tanstack-query, firestore, supabase, sqlite, drizzle, asyncstorage, zustand, repositories]
 applies_to: ["src/hooks/**", "src/stores/**", "src/repositories/**", "src/services/**", "src/core/**", "src/shared/data/**", "src/features/*/data/**", "src/db/**"]
 related: [01-architecture-overview.md, 02-architecture-layered.md, 03-architecture-feature-based.md, 13-errors-and-observability.md, 14-testing.md]
-last_updated: 2026-10-28
+last_updated: 2026-11-09
 ---
 
 # State and data
@@ -74,7 +74,7 @@ components/auth-guard/         mounts the host under {user && …}
 - **One write, no read.** Writes take a target resolved from the in-memory store by a pure util; repositories only write (`setDoc` / `writeBatch`), never `getDoc` in a write path.
 - **No `runTransaction` on single-writer data** — it needs a server round-trip and never settles offline. Use it only where two clients contend for one document.
 - Batch writes ≤ 500 operations (chunk at ~400).
-- React Native has no IndexedDB: use `memoryLocalCache()` on native (`persistentLocalCache()` only on web) and surface `isOffline` from `snapshot.metadata.fromCache` instead of an empty list.
+- **Which SDK decides the cache.** The Firebase JS SDK persists only to IndexedDB, which React Native lacks: on native use `memoryLocalCache()` (`persistentLocalCache()` only on web) and surface `isOffline` from `snapshot.metadata.fromCache` instead of an empty list. An app that must open and edit offline after a restart uses React Native Firebase (`@react-native-firebase/*`) instead: the native SDK keeps the cache and the queue of writes on disk by default, `isOffline` then means "nothing stored for this list", and sign-out and account deletion clear the device cache (`terminate` then `clearPersistence`) so one account never sees or sends another's data. Native Firestore authenticates only with the native Auth, so both move together.
 
 Security rules for user data: chapter 20 § Firestore rules.
 
