@@ -4,7 +4,7 @@ chapter: 16
 tags: [eas, environments, app-config, env-vars, secrets, builds, versioning, changelog, release-notes, stores]
 applies_to: ["app.config.ts", "eas.json", ".env.example", "CHANGELOG.md", "docs/release-notes.md", "package.json"]
 related: [13-errors-and-observability.md, 15-tooling-and-config.md, 17-git-and-collaboration.md, 18-documentation-system.md]
-last_updated: 2026-10-28
+last_updated: 2026-11-10
 ---
 
 # Environments, builds and releases
@@ -70,7 +70,7 @@ npm run upload:android        # eas submit --path … → Play internal track, d
 - `version` in `app.config.ts` follows **SemVer**: a fix bumps the patch, a new capability the minor. It is the version people see; one version may carry several builds.
 - **`CHANGELOG.md`** follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/), in **English**, for developers: entries under `## [Unreleased]`, groups in the order `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`; each entry says in one or two sentences what changed and its effect. Maintenance with no effect on the app (dotfiles, formatting, dev-only deps) stays out. Until a version has reached a store, changes edit that version's `Added` entries.
 - **`docs/release-notes.md`** holds the stores' "What's new" text: user-facing, in the app's locales (every locale the app ships), **≤ 500 characters per language** (Play Console's limit), counted with `wc -m`. Never write a note for a version already shipped and closed.
-- **Cutting a version is one commit**, `chore(release): X.Y.Z`, that renames `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD`, opens a fresh `[Unreleased]`, updates compare links, bumps `version` (and any README badge), and adds the release notes. Build from that commit, tag it `vX.Y.Z`, push the tag. A tag is never moved; a rebuild that changes code is a new patch version.
+- **Cutting a version is one commit**, `chore(release): X.Y.Z`, that renames `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD`, opens a fresh `[Unreleased]`, updates compare links, bumps `version` (and any README badge), and adds the release notes. A release branch is deleted after the merge, so build from the commit that lands on `main` and tag that commit `vX.Y.Z` after the upload, then push the tag: a tag made on the branch is orphaned by a squash merge. A problem found before the upload is fixed on `main` and rebuilt under the same version. A tag is never moved; once a version has shipped, a change to the code is a new patch version.
 - Store review prompts (`expo-store-review`) are asked only after a positive moment, through one service with explicit rules (minimum opens, days, spacing, yearly cap) — never on launch or from a screen directly.
 
 ## Legal pages
