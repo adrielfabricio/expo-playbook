@@ -42,6 +42,7 @@ The always-on rules a project imports (`@~/.claude/skills/expo-playbook/rules/al
 | What `AGENTS.md` / `CLAUDE.md` / `docs/` hold; ADRs; workspace planning files | [18-documentation-system](references/18-documentation-system.md) |
 | Definition of Done, Speckit, which skills/plugins to install where | [19-agent-workflow](references/19-agent-workflow.md) |
 | A library or platform trap (Firebase, Supabase, FlashList, gestures, `@expo/ui`, notifications, dates, EAS, IAP) | [20-gotchas](references/20-gotchas.md) |
+| Security: secrets, secure storage, R8/obfuscation, deep links, app integrity, RASP, pinning, release hygiene | [22-security](references/22-security.md) |
 | Start a new app from zero | [21-new-project](references/21-new-project.md) + [`templates/`](templates/) |
 | Check whether an app conforms to the playbook | Run the `expo-audit` skill (`/expo-audit`) — read-only scan + report |
 

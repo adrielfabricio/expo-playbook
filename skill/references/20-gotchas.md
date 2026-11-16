@@ -21,7 +21,7 @@ Each row cost a real bug in one of the apps. Apply the "Do"; never regress to th
 | `uuid` | `import "react-native-get-random-values";` as the **first** import of any module calling `uuidv4()` | Call `uuidv4()` without the polyfill — throws at runtime |
 | Switch | Wrap in `Toggle` with explicit track/thumb colors; give the iOS switch an explicit `alignSelf` in rows | A bare `Switch` (Android tints the thumb with the system accent; iOS sets `flex-start` on itself) |
 | TextInput | Spread type tokens **without** `lineHeight` | Pass `lineHeight` (iOS pushes the value above center) |
-| Android release | Keep rules via `expo-build-properties` `android.extraProguardRules` | Hand-edit `android/` (generated) or disable R8 |
+| Android release | `android.enableMinifyInReleaseBuilds` + `enableShrinkResourcesInReleaseBuilds` on in `expo-build-properties` (the template ships them **off**), keep rules via `android.extraProguardRules`; raise `org.gradle.jvmargs` to `-Xmx4096m` with a `withGradleProperties` config plugin (the template's 2 GB makes `minifyReleaseWithR8` die with `OutOfMemoryError`) | Hand-edit `android/` (generated) or leave R8 off — see [22-security](22-security.md) |
 | iOS 27 SDK | A config plugin adopting the UIScene lifecycle until Expo's template does (remove once it does) | Ship without it — UIKit stops the app at launch before any JS (nothing reaches Sentry) |
 | Native modules | New build for any native change (`@expo/ui`, notifications, haptics, store review) | Expect an OTA update or Expo Go to pick it up |
 | TypeScript 6 | `types: ["jest"]` (or the runner's) in `tsconfig.json` | Rely on automatic `@types/*` pickup |

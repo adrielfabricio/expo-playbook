@@ -16,7 +16,7 @@ Apps keep only what is specific to them (stack, domain rules, ADRs, gotchas) and
 expo-playbook/
 ├── skill/                 → linked as ~/.claude/skills/expo-playbook
 │   ├── SKILL.md           quick-lookup index: "I need to… → read chapter NN"
-│   ├── references/        00–21, one chapter per topic
+│   ├── references/        00–22, one chapter per topic
 │   ├── rules/             always-on rules (all.md imports the rest)
 │   └── templates/         CLAUDE/AGENTS templates and canonical config files
 ├── skill-audit/           → linked as ~/.claude/skills/expo-audit
