@@ -6,7 +6,8 @@
 
 1. Read the project's `AGENTS.md`: stack, domain rules, and its **Deviations** section (the only places it is allowed to differ from the playbook).
 2. Load the **`expo-playbook` skill** and read the chapter for the area you touch (its `SKILL.md` has the lookup table). Do this before planning, not after.
-3. Ask the human when a requirement is ambiguous or a rule conflicts with the task.
+3. Before creating a component, whether in a plan or in code, look for an existing one that does the job. Look in `shared/ui/` and the features' `components/` in a feature-based app, and in the whole flat `components/` folder in a layered one, not only its barrel. Extend it when the change is small and generic (a variant, a prop, multiple selection). Create a new one when the change would bring business rules into it. Details: ch. 07 § Reuse before you create.
+4. Ask the human when a requirement is ambiguous or a rule conflicts with the task.
 
 Precedence: cross-project ADRs → project ADRs → expo-playbook → project `AGENTS.md` → project `docs/` → code. An undeclared difference from the playbook is drift: fix the code, not the rule.
 

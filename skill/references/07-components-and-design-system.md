@@ -4,7 +4,7 @@ chapter: 07
 tags: [components, design-system, typography, icons, dialogs, sheets, lists, accessibility, jsx]
 applies_to: ["src/components/**", "src/shared/ui/**", "src/features/**/components/**", "src/features/**/screens/**", "src/app/**"]
 related: [04-naming-and-files.md, 05-file-layout.md, 08-styling-and-theme.md, 09-navigation-expo-router.md, 12-i18n.md]
-last_updated: 2026-10-28
+last_updated: 2026-11-24
 ---
 
 # Components and the design-system vocabulary
@@ -67,6 +67,25 @@ Every tappable surface is a `Touchable` (or a primitive built on it): it takes t
 ### Responsibility
 
 A component is **presentational** (props in, render out — no data fetching, no navigation decisions) or a **container** (a screen: calls hooks, resolves data and callbacks, renders presentational children). Never both.
+
+### Reuse before you create
+
+Before proposing a new component, whether in a plan or in code, look for one that already does the job. Search by **what it does** (chips, picker, stepper, sheet, row, empty state), not only by name: a "chips" need may be met by `Select layout="chips"`, `filter-chips` or a feature's `option-chips`. Grepping `accessibilityRole` and the props shape finds what naming alone misses.
+
+Where to look depends on the architecture:
+
+| Architecture | Look in |
+| --- | --- |
+| Feature-based (ch. 03) | `shared/ui/` (the primitives); the feature's own `components/`, and pieces built inline in its `screens/`; other features' `components/`. A component there that would serve is reachable only through its feature's `index.ts`, so reusing it means promoting it to `shared/`, which happens once a second consumer actually imports it |
+| Layered (ch. 02) | The whole of `components/`. It is **flat**: primitives (`select`, `text-field`, `native-picker`) sit beside domain pieces (`*-row`, `*-sheet`, `*-list`, `*-header`) and hosts (`*-host`). The barrel `components/index.ts` lists only what screens and hooks consume, so list the folder rather than trusting the barrel |
+| Both | The canonical vocabulary above. A need that matches a primitive by purpose (single choice → `Select`, a titled group → `Section`) is met by the primitive, not by a lookalike |
+
+Then decide:
+
+- **The adaptation is small and generic, so extend the existing component.** Examples: a variant, a size, a prop that turns single selection into multiple selection, an optional icon. The new mode is one discriminated prop, the existing callers keep their props and output unchanged, and the existing tests stay green as written.
+- **The adaptation brings business rules, so create a new component.** Signs: domain branching (`if (isSymptom)`), props that make sense for only one caller, or the component starting to know about entities. A component that serves two domains through flags is harder to change than two specific components. The new one may still compose the existing one inside.
+
+A plan names the component it reuses or extends, and for each new component it says why nothing existing fits. The Constitution Check carries a row for it.
 
 ### Props
 

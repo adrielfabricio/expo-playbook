@@ -20,6 +20,7 @@
 `speckit-constitution` → `speckit-specify` → `speckit-clarify` → `speckit-plan` → `speckit-tasks` → `speckit-implement`, with `speckit-analyze` / `speckit-checklist` / `speckit-converge` as checks.
 
 - **Constitution:** the expo-playbook plus the affected repository's `AGENTS.md` and ADRs. Read them before `/speckit-specify` and `/speckit-plan`; the plan's Constitution Check checks against them.
+- **Reuse:** the plan lists the components it reuses or extends, and justifies each new one (ch. 07 § Reuse before you create). `/speckit-tasks` turns an extension into a task on the existing component, never into a new sibling.
 - **Sizing:** one spec per backlog / build-order item. A spec that sprouts sub-features is split.
 - **Implementation** runs each repository's Definition of Done and always-on rules.
 
